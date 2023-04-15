@@ -3,7 +3,11 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 exports.generateToken = (user) => {
-    return jwt.sign({ _id: user._id, username: user.username }, JWT_SECRET_KEY);
+    try {
+        return jwt.sign({ _id: user._id, username: user.username }, JWT_SECRET_KEY);
+    } catch (error) {
+        res.status(400).json({ message: "Unable to generate token" });
+    }
 };
 
 exports.verifyToken = async (req, res, next) => {
